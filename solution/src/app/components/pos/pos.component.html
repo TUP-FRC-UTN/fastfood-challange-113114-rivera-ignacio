@@ -1,0 +1,16 @@
+<h1>Componente Point of Sell - POS</h1>
+<form #form="ngForm">
+    <div>
+        <label for="name">Nombre:</label>
+        <input #controlName="ngModel" type="text" name="name" [(ngModel)]="name" required
+        [ngClass]="{invalid: controlName.invalid && (controlName.touched || controlName.dirty)}">
+    </div>
+    <div>   
+        <label for="description">Pedido:</label>
+        <input #controlDescription="ngModel" type="text" name="description" [(ngModel)]="description" required
+        [ngClass]="{invalid: controlDescription.invalid && (controlDescription.touched || controlName.dirty)}">
+
+    </div>    
+    <button (click)="AddOrder(form)">Ordenar</button>
+</form>
+
