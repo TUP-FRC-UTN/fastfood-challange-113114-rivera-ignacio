@@ -1,37 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Orders } from '../models/orders';
-import { BehaviorSubject } from 'rxjs';
+import { Order } from '../models/order';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private ordersListSubject = new BehaviorSubject<Orders[]>([]);
-  ordersList = this.ordersListSubject.asObservable();
+  public ordersList: Object [] = [];
+  public pendingCookList : Order [] = [];
+  public cookingList: Order [] = [];
+  public readyList: Order [] = [];
 
-  private pendingCookList : Orders [] = [];
-  private cookingList: Orders [] = [];
-  private radyList: Orders [] = [];
-
-  GetOrders(): Orders[]{
-    return this.ordersListSubject.value;
-  }
-
-  AddOrder(name: string, description: string): Orders{
-    var newOrder: Orders = {
+  AddOrder(name: string, description: string): Order{
+    var newOrder: Order = {
       number: Math.floor(Math.random() * 1000) + 1,
       name: name,
       description: description,
       date: new Date()
     }
-    var updatedOrdersList = [...this.ordersListSubject.value, newOrder];
-    this.ordersListSubject.next(updatedOrdersList); 
+    this.ordersList.push({
+      nombre: newOrder.name,
+      descripcion: newOrder.description,
+      numero: newOrder.number
+    });
+    this.pendingCookList.push(newOrder);
     return newOrder;
   }
 
-  RemoveOrder(number: number): boolean{
-    const updatedOrdersList = this.ordersListSubject.value.filter(order => order.number !== number);
-    this.ordersListSubject.next(updatedOrdersList);
-    return true;
+  AddCookingList(order: Order): void{
+    this.cookingList.push(order);
+    this.pendingCookList = this.pendingCookList.filter(orderP => orderP != order);    
   }
+
+  AddReadyList(order: Order): void{
+    this.readyList.push(order);
+    this.cookingList = this.cookingList.filter(orderC => orderC != order);
+  }
+
+  DeliverOrder(order: Order){
+    this.readyList = this.readyList.filter(orderR => orderR != order);
+  }
+  
 }

@@ -1,1 +1,6 @@
-<p>delivery-point works!</p>
+<p>Pedidos listos para entregar</p>
+<ul>
+    @for (order of orderProvider.readyList; track $index) {
+        <li>{{order.number}} - {{order.name}} <button (click)="orderProvider.DeliverOrder(order)">Entregar!</button></li>
+    }
+</ul>

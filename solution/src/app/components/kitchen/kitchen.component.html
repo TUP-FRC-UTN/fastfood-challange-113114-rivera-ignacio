@@ -1,1 +1,13 @@
-<p>kitchen works!</p>
+<h1>Componente Cocina</h1>
+<h2>Pendiente de Cocina</h2>
+<ul>
+    @for (order of orderProvider.pendingCookList; track $index) {
+        <li>({{order.number}}) - {{order.description}} <button (click)="orderProvider.AddCookingList(order)">Cocinar</button> </li>
+    }
+</ul>
+<h2>Pedidos en coccion</h2>
+<ul>
+    @for (order of orderProvider.cookingList; track $index) {
+        <li>({{order.number}}) {{order.name}} - {{order.description}} <button (click)="orderProvider.AddReadyList(order)">Pedido Terminado!</button> </li>
+    }
+</ul>
